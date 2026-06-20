@@ -1,6 +1,6 @@
 # Floating ai Avatar
  
-A floating, voice-activated AI companion for Android (with partial iOS support) built in Flutter. The Avatar lives as an animated overlay that sits on top of other apps, listens when spoken to, responds out loud, and can carry out a small set of real-world actions on the user's behalf (e.g. sending a WhatsApp message, setting a timer).
+A floating, voice-activated AI companion for Android built in Flutter. The Avatar lives as an animated overlay that sits on top of other apps, listens when spoken to, responds out loud, and can carry out a small set of real-world actions on the user's behalf (e.g. sending a WhatsApp message, setting a timer).
 
 ## Core Features
  

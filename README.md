@@ -1,11 +1,7 @@
-# Floating ai avatar
+# Floating ai Avatar
  
 A floating, voice-activated AI companion for Android (with partial iOS support) built in Flutter. The Avatar lives as an animated overlay that sits on top of other apps, listens when spoken to, responds out loud, and can carry out a small set of real-world actions on the user's behalf (e.g. sending a WhatsApp message, setting a timer).
- 
-> **Status:** Active development — frontend (this repo) is functional; backend/voice-intelligence service is maintained separately and will be documented once integrated here.
- 
----
- 
+
 ## Core Features
  
 - **Floating Avatar Overlay** — A draggable, always-on-top widget (via a native system overlay) that renders an animated character built in Rive. The avatar's expression/animation state reflects what it's currently doing (idle, listening, thinking, speaking).
@@ -56,7 +52,7 @@ lib/
 | Concern | Library / Service |
 |---|---|
 | Framework | Flutter (Dart) |
-| App-level state | `provider` (avatar lifecycle) |
+| App-level state | `provider` (animation lifecycle) |
 | Auth state | `flutter_bloc` |
 | Avatar animation | Rive |
 | Floating overlay | `flutter_overlay_window` |
@@ -94,12 +90,38 @@ Safety nets in place: an idle timeout resets the session if the user goes silent
 | Microphone | Core voice interaction |
 | Display over other apps (overlay) | Renders the floating avatar |
 | Contacts (optional) | Resolves a spoken name to a phone number for the WhatsApp action — feature degrades gracefully if denied |
+  
+## Backend
  
+The voice-intelligence service the app talks to is a separate API. It's documented here at an architectural level only — the system prompt and the tool-selection wording that drive reliable action handling are deliberately left out of this repo.
+
+**Request flow:**
+1. App sends a recorded audio clip to the API, along with a Supabase auth token.
+2. The token is verified against Supabase's public JWKS before anything else runs.
+3. Audio is transcribed to text.
+4. The transcript is passed to an LLM bound to a fixed set of callable actions, with an automatic fallback to a secondary provider if the primary is unavailable.
+5. The API returns a short spoken reply and, if the model selected an action, a structured payload matching the app's intent-router contract.
+
+**Tech stack:**
+ 
+| Concern | Library / Service |
+|---|---|
+| Runtime | Cloudflare Workers |
+| API framework | Hono |
+| LLM orchestration | LangChain, multi-provider with automatic fallback |
+| LLM providers | Groq (primary), Google Gemini (fallback) |
+| Speech-to-text | Groq Whisper API |
+| Request authentication | Supabase JWT verification (JWKS) |
+| Structured action validation | Zod |
+
 ---
 
- 
-
- 
-© 2026 — All rights reserved.
- 
+<p align="center">
+<br>
+  <img src="https://img.shields.io/badge/Built%20with-Flutter-02569B?style=flat-square&logo=flutter&logoColor=white" />
+  &nbsp;
+</p>
+<p align="center">
+  Copyright &copy; 2026 tsumith. All Rights Reserved.
+</p>
 
